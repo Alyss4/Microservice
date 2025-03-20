@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Contrats\IEntity;
 
-class Item extends Model
+class Item extends Model implements IEntity
 {
-    protected $table = 'items';
     protected $fillable = ['name', 'description', 'price'];
-}
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+}
 ?>

@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\DTOs\ItemDTO;
+use App\DTO\ItemDTO;
 use App\Repositories\ItemRepository;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    protected $itemRepository;
+    protected ItemRepository $itemRepository;
 
     public function __construct(ItemRepository $itemRepository)
     {
@@ -27,15 +28,15 @@ class ItemController extends Controller
 
         return response()->json($item, 201);
     }
+
     public function show($id)
     {
         $item = $this->itemRepository->getById($id);
 
         return $item
             ? response()->json($item)
-            : response()->json(['error' => '404'], 404);
+            : response()->json(['error' => 'Item not found'], 404);
     }
-
 
     public function update(Request $request, $id)
     {
@@ -49,7 +50,15 @@ class ItemController extends Controller
         $updated = $this->itemRepository->update($id, $dto->toArray());
 
         return $updated
-            ? response()->json(['message' => '200'])
-            : response()->json(['error' => '404'], 404);
+            ? response()->json(['message' => 'Item updated'])
+            : response()->json(['error' => 'Item not found'], 404);
+    }
+
+    public function destroy($id)
+    {
+        return $this->itemRepository->delete($id)
+            ? response()->json(['message' => 'Item deleted'])
+            : response()->json(['error' => 'Item not found'], 404);
     }
 }
+?>

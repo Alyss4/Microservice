@@ -11,12 +11,14 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+
     public function register()
     {
-        $this->app->bind(ItemRepository::class, function ($app) {
-            return new ItemRepository();
+        $this->app->singleton(ItemRepository::class, function ($app) {
+            return new ItemRepository($app->make(\App\Models\Item::class));
         });
     }
+
 
 
     /**
